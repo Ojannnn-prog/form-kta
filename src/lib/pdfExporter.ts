@@ -13,80 +13,15 @@ async function waitForFontsAndDOM(): Promise<void> {
     }
   }
   // Short yield to allow any DOM relayouts
-  await new Promise((resolve) => setTimeout(resolve, 100));
-}
-
-/**
- * Sanitizes any modern CSS color functions (LAB, OKLCH, color-mix) from cloned DOM nodes,
- * AND enforces letter-spacing / anti-ligature rules to permanently prevent HTML2Canvas
- * from squishing, overlapping, or clipping words on Windows Chrome/Edge.
- */
-function prepareClonedDOMForCanvas(rootEl: HTMLElement, clonedDoc: Document): void {
-  // Ensure web fonts from main document are available inside the cloned document
-  if (typeof document !== "undefined" && document.fonts && clonedDoc.fonts) {
-    document.fonts.forEach((font) => {
-      try {
-        clonedDoc.fonts.add(font);
-      } catch (e) {
-        // Ignore unsupported font handle errors
-      }
-    });
-  }
-
-  const allNodes = [rootEl, ...Array.from(rootEl.querySelectorAll("*"))];
-  allNodes.forEach((node) => {
-    if (node instanceof HTMLElement || node instanceof SVGElement) {
-      const computed = window.getComputedStyle(node);
-
-      const color = computed.getPropertyValue("color");
-      const bg = computed.getPropertyValue("background-color");
-      const border = computed.getPropertyValue("border-color");
-
-      if (
-        color &&
-        (color.includes("lab(") ||
-          color.includes("oklch(") ||
-          color.includes("color-mix("))
-      ) {
-        node.style.setProperty("color", "#004080", "important");
-      }
-      if (
-        bg &&
-        (bg.includes("lab(") ||
-          bg.includes("oklch(") ||
-          bg.includes("color-mix("))
-      ) {
-        node.style.setProperty("background-color", "#F4EBD0", "important");
-      }
-      if (
-        border &&
-        (border.includes("lab(") ||
-          border.includes("oklch(") ||
-          border.includes("color-mix("))
-      ) {
-        node.style.setProperty("border-color", "#004080", "important");
-      }
-    }
-
-    // Apply Magic CSS Fix for HTML2Canvas text squishing and clipping on Windows
-    if (node instanceof HTMLElement) {
-      node.style.fontVariantLigatures = "none";
-      node.style.fontFeatureSettings = '"liga" 0';
-      node.style.textRendering = "geometricPrecision";
-      
-      // Ensure letter-spacing is slightly positive so characters never collide
-      const currentSpacing = node.style.letterSpacing;
-      if (!currentSpacing || currentSpacing === "normal" || currentSpacing === "0px") {
-        node.style.letterSpacing = "0.25px";
-      }
-    }
-  });
+  await new Promise((resolve) => setTimeout(resolve, 80));
 }
 
 /**
  * Captures the KTACard element and exports it as a ready-to-print CR-80 standard ID Card PDF
  * CR-80 Dimension: 85.60 mm x 53.98 mm
  * Resolution: scale 3 (~300 DPI high resolution print quality)
+ *
+ * Restored to exact original early working version without experimental DOM style injection.
  */
 export async function exportToPDF(
   element: HTMLElement,
@@ -114,9 +49,6 @@ export async function exportToPDF(
       clonedEl.style.margin = "0";
       clonedEl.style.position = "relative";
       clonedEl.style.overflow = "hidden";
-
-      // Sanitize LAB/OKLCH color functions and apply anti-squish typography rules
-      prepareClonedDOMForCanvas(clonedEl, clonedDoc);
     },
   });
 
@@ -168,9 +100,6 @@ export async function exportToPNG(
       clonedEl.style.margin = "0";
       clonedEl.style.position = "relative";
       clonedEl.style.overflow = "hidden";
-
-      // Sanitize LAB/OKLCH color functions and apply anti-squish typography rules
-      prepareClonedDOMForCanvas(clonedEl, clonedDoc);
     },
   });
 

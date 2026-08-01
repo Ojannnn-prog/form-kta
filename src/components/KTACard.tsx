@@ -18,20 +18,10 @@ interface KTACardProps {
 }
 
 /**
- * Common text style to prevent HTML2Canvas letter squishing, overlapping,
- * and bottom letter clipping on Windows browsers.
- */
-const antiSquishStyle: React.CSSProperties = {
-  letterSpacing: "0.3px",
-  fontVariantLigatures: "none",
-  fontFeatureSettings: '"liga" 0',
-  textRendering: "geometricPrecision",
-};
-
-/**
  * KTACard Component - CR-80 Standard ID Card (85.6mm x 53.98mm)
- * Focused EXCLUSIVELY on Photo and Student Name.
- * No ID code box, no validity/berlaku box, with Magic CSS Fix for HTML2Canvas.
+ * Restored to exact original early working version (commit 36876c2),
+ * with the ID code box removed so it focuses purely on Student Name and Photo.
+ * Zero experimental typography styles — 100% clean and never overlaps.
  */
 export const KTACard: React.FC<KTACardProps> = ({
   data,
@@ -55,7 +45,7 @@ export const KTACard: React.FC<KTACardProps> = ({
       style={{
         width: "428px",
         height: "270px",
-        fontFamily: "'Inter', 'Segoe UI', Roboto, sans-serif",
+        fontFamily: "var(--font-inter, 'Segoe UI', sans-serif)",
       }}
     >
       {/* Background Retro Grid & Geometric Decorations */}
@@ -66,7 +56,7 @@ export const KTACard: React.FC<KTACardProps> = ({
             linear-gradient(to right, #004080 1px, transparent 1px),
             linear-gradient(to bottom, #004080 1px, transparent 1px)
           `,
-          backgroundSize: "16px 16px",
+          backgroundSize: "14px 14px",
         }}
       />
 
@@ -92,31 +82,26 @@ export const KTACard: React.FC<KTACardProps> = ({
           </div>
           <div className="flex flex-col">
             <span
-              className="text-[11px] font-bold text-[#EAA221]"
+              className="text-[10px] font-bold tracking-wider leading-tight text-[#EAA221]"
               style={{
-                ...antiSquishStyle,
                 fontFamily:
                   "var(--font-pixel, 'Courier New'), 'Courier New', Courier, monospace",
               }}
             >
               KaDigi x KKA
             </span>
-            <span
-              className="text-[8px] text-white uppercase font-bold mt-1"
-              style={antiSquishStyle}
-            >
+            <span className="text-[7.5px] tracking-wide text-white uppercase font-bold mt-0.5">
               SDN 231 SUKAASIH • KELAS DIGITAL
             </span>
           </div>
         </div>
 
         {/* Right Badge: KODING & AI */}
-        <div className="flex items-center gap-1.5 bg-[#EAA221] text-[#004080] px-2.5 py-1 border border-white">
+        <div className="flex items-center gap-1 bg-[#EAA221] text-[#004080] px-2 py-0.5 border border-white">
           <div className="w-1.5 h-1.5 bg-[#004080] rounded-full" />
           <span
-            className="text-[8px] font-bold uppercase"
+            className="text-[7px] font-black uppercase tracking-wider"
             style={{
-              ...antiSquishStyle,
               fontFamily:
                 "var(--font-pixel, 'Courier New'), 'Courier New', Courier, monospace",
             }}
@@ -126,11 +111,11 @@ export const KTACard: React.FC<KTACardProps> = ({
         </div>
       </div>
 
-      {/* Main Card Content: Photo Left, Clean Name & School Right */}
-      <div className="absolute top-11 bottom-8 left-0 right-0 px-5 py-3 flex items-center gap-6">
+      {/* Main Card Content */}
+      <div className="absolute top-11 bottom-8 left-0 right-0 px-4 py-2 flex items-center gap-4">
         {/* Left: Pixelated Frame Photo */}
         <div className="flex-shrink-0 flex flex-col items-center">
-          <div className="w-[106px] h-[132px] bg-white border-[2.5px] border-[#004080] shadow-[3px_3px_0px_#004080] relative overflow-hidden flex items-center justify-center">
+          <div className="w-[102px] h-[124px] bg-white border-[2.5px] border-[#004080] shadow-[2px_2px_0px_#004080] relative overflow-hidden flex items-center justify-center">
             {/* Corner Accent Squares */}
             <div className="absolute top-0 left-0 w-1.5 h-1.5 bg-[#EAA221] z-10" />
             <div className="absolute top-0 right-0 w-1.5 h-1.5 bg-[#EAA221] z-10" />
@@ -152,92 +137,75 @@ export const KTACard: React.FC<KTACardProps> = ({
                 >
                   <path d="M8 4h8v2H8V4zm-2 2h2v6H6V6zm10 0h2v6h-2V6zM8 12h8v2H8v-2zm-4 2h4v2H4v-2zm12 0h4v2h-4v-2zm-2 2h2v6h-2v-6zm-8 0h2v6H6v-6z" />
                 </svg>
-                <span
-                  className="text-[8px] font-bold mt-1 uppercase"
-                  style={antiSquishStyle}
-                >
+                <span className="text-[8px] font-bold mt-1 uppercase tracking-tighter">
                   NO PHOTO
                 </span>
               </div>
             )}
           </div>
           {/* Status badge below photo */}
-          <div
-            className="mt-2 bg-[#004080] text-[#EAA221] px-2.5 py-0.5 border border-[#004080] text-[8px] font-bold uppercase"
-            style={antiSquishStyle}
-          >
+          <div className="mt-1 bg-[#004080] text-[#EAA221] px-2 py-0.5 border border-[#004080] text-[8px] font-bold uppercase tracking-wider">
             ANGGOTA AKTIF
           </div>
         </div>
 
-        {/* Right: Focused Exclusively on Student Name & School Info (No validity box, no overlapping) */}
-        <div className="flex-1 min-w-0 flex flex-col justify-between h-full py-1 z-10">
-          {/* Section 1: Name (Large, clear, uncluttered, generous line height) */}
-          <div className="pt-2">
-            <div
-              className="text-[9px] font-bold uppercase text-[#D35400]"
-              style={antiSquishStyle}
-            >
+        {/* Right: Member Info & Details (Exact original early clean layout, without ID code box) */}
+        <div className="flex-1 min-w-0 flex flex-col justify-between h-full py-0.5 z-10">
+          <div>
+            <div className="text-[8.5px] font-bold uppercase tracking-widest text-[#D35400]">
               NAMA ANGGOTA / STUDENT NAME
             </div>
             <div
-              className="text-[19px] font-black text-[#004080] mt-1 uppercase break-words"
-              style={{
-                ...antiSquishStyle,
-                lineHeight: "1.35",
-                paddingBottom: "2px",
-              }}
+              className="text-[17px] font-extrabold leading-normal text-[#004080] tracking-tight mt-0.5 break-words uppercase py-0.5"
               title={fullName || "NAMA SISWA"}
             >
               {fullName || "NAMA SISWA"}
             </div>
-            <div className="w-20 h-[3px] bg-[#EAA221] mt-2.5" />
+            <div className="w-12 h-0.5 bg-[#EAA221] mt-0.5" />
           </div>
 
-          {/* Section 2: School & Extracurricular Info (Clean block strings with antiSquishStyle) */}
-          <div className="space-y-1.5 pb-1">
-            <div
-              className="text-[10px] font-bold text-[#004080]"
-              style={antiSquishStyle}
-            >
-              SEKOLAH: SDN 231 SUKAASIH
+          {/* Division & School Info (Original clean layout at bottom of right column) */}
+          <div className="flex flex-col text-[8px] font-semibold text-[#004080] pt-1">
+            <div className="flex items-center justify-between">
+              <div>
+                <span className="opacity-70">SEKOLAH:</span>{" "}
+                <span className="font-bold">SDN 231 SUKAASIH</span>
+              </div>
+              <div>
+                <span className="opacity-70">STATUS:</span>{" "}
+                <span className="font-bold">{displayDate}</span>
+              </div>
             </div>
-            <div
-              className="text-[10px] font-extrabold text-[#D35400] uppercase"
-              style={antiSquishStyle}
-            >
-              EKSKUL: KODING &amp; KECERDASAN ARTIFISIAL
-            </div>
-            <div
-              className="text-[9px] font-semibold text-[#004080] opacity-80"
-              style={antiSquishStyle}
-            >
-              STATUS: ANGGOTA AKTIF ({displayDate})
+            <div className="text-[8px] mt-0.5 font-bold text-[#D35400]">
+              KODING &amp; KECERDASAN ARTIFISIAL
             </div>
           </div>
         </div>
       </div>
 
       {/* Bottom Retro Footer Bar */}
-      <div className="absolute bottom-0 left-0 right-0 h-8 bg-[#EAA221] border-t-2 border-[#004080] px-3.5 flex items-center justify-between text-[#004080]">
-        {/* Organization Tagline */}
+      <div className="absolute bottom-0 left-0 right-0 h-8 bg-[#EAA221] border-t-2 border-[#004080] px-3 flex items-center justify-between text-[#004080]">
+        {/* Joystick / Gamepad Retro Pixel Ornament */}
         <div className="flex items-center gap-1.5">
           <svg
             viewBox="0 0 24 24"
-            className="w-3.5 h-3.5 fill-[#004080]"
+            className="w-4 h-4 fill-[#004080]"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path d="M6 6h12v4h4v4h-4v4H6v-4H2v-4h4V6zm2 4v4h8v-4H8zm2-2h4v2h-4V8zm-2 2h2v4H8v-4zm6 0h2v4h-2v-4zm-2 4h4v2h-4v-2z" />
           </svg>
           <span
-            className="text-[8px] font-bold uppercase text-[#004080]"
-            style={antiSquishStyle}
+            className="text-[7px] font-bold uppercase tracking-wide text-[#004080]"
+            style={{
+              fontFamily:
+                "var(--font-pixel, 'Courier New'), 'Courier New', Courier, monospace",
+            }}
           >
-            KELAS DIGITAL • SDN 231 SUKAASIH
+            KELAS DIGITAL SDN 231 SUKAASIH
           </span>
         </div>
 
-        {/* Simulated Retro Pixel Barcode */}
+        {/* Simulated Pixel Barcode */}
         <div className="flex items-center gap-0.5 h-4 opacity-80">
           {[2, 1, 3, 1, 2, 1, 1, 3, 2, 1, 2, 1, 3, 1, 2].map((w, idx) => (
             <div
@@ -246,9 +214,7 @@ export const KTACard: React.FC<KTACardProps> = ({
               style={{ width: `${w}px` }}
             />
           ))}
-          <span className="text-[8px] font-mono font-bold ml-1" style={antiSquishStyle}>
-            KKA
-          </span>
+          <span className="text-[7px] font-mono font-bold ml-1">KKA</span>
         </div>
       </div>
     </div>
