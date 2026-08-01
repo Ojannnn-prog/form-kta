@@ -100,11 +100,11 @@ export default function HomePage() {
               </div>
               <div>
                 <h3 className="font-extrabold text-sm text-[#004080]">
-                  2. MASA BERLAKU OTOMATIS
+                  2. FOKUS NAMA &amp; FOTO
                 </h3>
                 <p className="text-xs text-[#004080]/75 mt-0.5 font-semibold">
-                  Masa aktif tertera jelas hingga tamat SD atau selesai mengikuti
-                  ekskul KaDigi x KKA.
+                  Tampilan kartu bersih dan rapi dengan fokus pada identitas nama
+                  siswa dan foto resmi ekskul.
                 </p>
               </div>
             </div>
