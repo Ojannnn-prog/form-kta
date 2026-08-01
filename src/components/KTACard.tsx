@@ -4,7 +4,7 @@ import React from "react";
 
 export interface KTADetails {
   fullName: string;
-  memberCode: string;
+  memberCode?: string;
   photoBase64?: string;
   createdAt?: string;
 }
@@ -19,7 +19,7 @@ interface KTACardProps {
 /**
  * KTACard Component - CR-80 Standard ID Card (85.6mm x 53.98mm)
  * Clean Modern Retro ID Card — Focused on Photo, Student Name, School & Membership Term
- * Optimized for HTML2Canvas 300 DPI Export without letter squishing or line overlaps.
+ * 100% Pure HEX Colors (No Tailwind v4 color-mix/lab/oklch opacity modifiers) for HTML2Canvas compatibility.
  */
 export const KTACard: React.FC<KTACardProps> = ({
   data,
@@ -65,7 +65,7 @@ export const KTACard: React.FC<KTACardProps> = ({
       <div className="absolute top-0 left-0 right-0 h-11 bg-[#004080] text-[#F4EBD0] flex items-center justify-between px-3.5 border-b-2 border-[#EAA221]">
         {/* KaDigi x KKA Official Logo & School Name */}
         <div className="flex items-center gap-2.5">
-          <div className="h-8 px-1.5 py-0.5 bg-white border border-[#EAA221] rounded-sm flex items-center justify-center shadow-sm">
+          <div className="h-8 px-1.5 py-0.5 bg-[#FFFFFF] border border-[#EAA221] rounded-sm flex items-center justify-center shadow-sm">
             <img
               src="/logo-kodigi-kka.png"
               alt="Logo KaDigi x KKA"
@@ -76,14 +76,14 @@ export const KTACard: React.FC<KTACardProps> = ({
             <span className="text-[11px] font-black text-[#EAA221] uppercase tracking-normal leading-none">
               KaDigi x KKA
             </span>
-            <span className="text-[8px] text-white uppercase font-bold tracking-wide mt-0.5 leading-none">
+            <span className="text-[8px] text-[#FFFFFF] uppercase font-bold tracking-wide mt-0.5 leading-none">
               SDN 231 SUKAASIH • KELAS DIGITAL
             </span>
           </div>
         </div>
 
         {/* Right Badge: EKSTIKKA ACCESS */}
-        <div className="flex items-center gap-1.5 bg-[#EAA221] text-[#004080] px-2.5 py-1 border border-white">
+        <div className="flex items-center gap-1.5 bg-[#EAA221] text-[#004080] px-2.5 py-1 border border-[#FFFFFF]">
           <div className="w-1.5 h-1.5 bg-[#004080] rounded-full" />
           <span className="text-[8px] font-black uppercase tracking-wide leading-none">
             KODING &amp; AI
@@ -95,7 +95,7 @@ export const KTACard: React.FC<KTACardProps> = ({
       <div className="absolute top-11 bottom-8 left-0 right-0 px-5 py-3 flex items-center gap-5">
         {/* Left: Pixelated Frame Photo */}
         <div className="flex-shrink-0 flex flex-col items-center">
-          <div className="w-[108px] h-[136px] bg-white border-[2.5px] border-[#004080] shadow-[3px_3px_0px_#004080] relative overflow-hidden flex items-center justify-center">
+          <div className="w-[108px] h-[136px] bg-[#FFFFFF] border-[2.5px] border-[#004080] shadow-[3px_3px_0px_#004080] relative overflow-hidden flex items-center justify-center">
             {/* Corner Accent Squares */}
             <div className="absolute top-0 left-0 w-1.5 h-1.5 bg-[#EAA221] z-10" />
             <div className="absolute top-0 right-0 w-1.5 h-1.5 bg-[#EAA221] z-10" />
@@ -147,25 +147,29 @@ export const KTACard: React.FC<KTACardProps> = ({
           {/* School & Extracurricular Info */}
           <div className="space-y-1">
             <div className="flex items-center justify-between text-[9px]">
-              <span className="font-semibold text-[#004080]/75">SEKOLAH:</span>
+              <span className="font-semibold text-[#004080] opacity-75">
+                SEKOLAH:
+              </span>
               <span className="font-black text-[#004080] uppercase">
                 SDN 231 SUKAASIH
               </span>
             </div>
             <div className="flex items-center justify-between text-[9px]">
-              <span className="font-semibold text-[#004080]/75">EKSKUL:</span>
+              <span className="font-semibold text-[#004080] opacity-75">
+                EKSKUL:
+              </span>
               <span className="font-black text-[#D35400] uppercase">
                 KODING &amp; KECERDASAN ARTIFISIAL
               </span>
             </div>
           </div>
 
-          {/* Membership Active Term Explanation */}
-          <div className="bg-white/85 border-[1.5px] border-[#004080] px-2.5 py-1.5 shadow-[2px_2px_0px_#004080]">
+          {/* Membership Active Term Explanation - Using pure hex #FDFBF7 instead of white/85 */}
+          <div className="bg-[#FDFBF7] border-[1.5px] border-[#004080] px-2.5 py-1.5 shadow-[2px_2px_0px_#004080]">
             <div className="text-[7.5px] font-black text-[#004080] uppercase tracking-wide">
               MASA BERLAKU KEANGGOTAAN
             </div>
-            <p className="text-[7.5px] font-medium text-[#004080]/85 leading-normal mt-0.5">
+            <p className="text-[7.5px] font-medium text-[#004080] leading-normal mt-0.5 opacity-90">
               Berlaku selama menjadi siswa aktif SDN 231 Sukaasih atau hingga
               selesai mengikuti kegiatan ekstrakurikuler KaDigi x KKA.
             </p>
