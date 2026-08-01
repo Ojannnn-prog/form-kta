@@ -1,26 +1,60 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --color-paper: #f4ebd0;
+  --color-paper-alt: #e9dcc9;
+  --color-mustard: #eaa221;
+  --color-coffee: #4a3b32;
+  --color-terracotta: #d35400;
+  --color-cream-card: #f9f4ea;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-paper: var(--color-paper);
+  --color-paper-alt: var(--color-paper-alt);
+  --color-mustard: var(--color-mustard);
+  --color-coffee: var(--color-coffee);
+  --color-terracotta: var(--color-terracotta);
+  --color-cream: var(--color-cream-card);
+  --font-sans: var(--font-inter, sans-serif);
+  --font-pixel: var(--font-pixel, "Courier New", monospace);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-paper);
+  color: var(--color-coffee);
+  font-family: var(--font-inter, sans-serif);
+  background-image: radial-gradient(rgba(74, 59, 50, 0.08) 1px, transparent 1px),
+    radial-gradient(rgba(74, 59, 50, 0.08) 1px, #f4ebd0 1px);
+  background-size: 24px 24px;
+  background-position: 0 0, 12px 12px;
+}
+
+/* Custom Neo-brutalism / Retro Hard Shadows & Effects */
+.shadow-retro {
+  box-shadow: 4px 4px 0px #4a3b32;
+}
+
+.shadow-retro-lg {
+  box-shadow: 6px 6px 0px #4a3b32;
+}
+
+.shadow-retro-sm {
+  box-shadow: 2px 2px 0px #4a3b32;
+}
+
+.shadow-retro-button {
+  box-shadow: 4px 4px 0px #4a3b32;
+  transition: all 0.15s ease-in-out;
+}
+
+.shadow-retro-button:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0px #4a3b32;
+}
+
+/* Pixel border styling for retro elements */
+.pixel-border {
+  border: 3px solid #4a3b32;
+  box-shadow: 3px 3px 0px #4a3b32;
 }

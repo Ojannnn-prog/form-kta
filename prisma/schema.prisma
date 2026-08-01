@@ -1,0 +1,21 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Member {
+  id          String   @id @default(uuid()) @db.Uuid
+  fullName    String   @map("full_name")
+  memberCode  String   @unique @map("member_code")
+  photoBase64 String   @map("photo_base64") @db.Text
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@map("members")
+}
