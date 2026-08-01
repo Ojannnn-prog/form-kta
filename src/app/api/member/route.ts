@@ -21,17 +21,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Determine unique member code
+    // Determine unique member code in background for database indexing
     let memberCode = customCode;
     if (!memberCode) {
       memberCode = await getUniqueMemberCode();
     } else {
-      // If custom code provided, check if it already exists
       const existing = await prisma.member.findUnique({
         where: { memberCode },
       });
       if (existing) {
-        // If code already taken, generate a new unique code automatically
         memberCode = await getUniqueMemberCode();
       }
     }
@@ -67,7 +65,31 @@ export async function GET(req: NextRequest) {
   try {
     const { searchParams } = new URL(req.url);
     const codeParam = searchParams.get("code");
+    const nameParam = searchParams.get("name") || searchParams.get("q");
     const idParam = searchParams.get("id");
+
+    // Search by Name (case-insensitive partial or exact match)
+    if (nameParam && nameParam.trim() !== "") {
+      const queryName = nameParam.trim();
+      const members = await prisma.member.findMany({
+        where: {
+          fullName: {
+            contains: queryName,
+            mode: "insensitive",
+          },
+        },
+        orderBy: { createdAt: "desc" },
+        take: 1,
+      });
+
+      if (!members || members.length === 0) {
+        return NextResponse.json(
+          { error: `Kartu KTA untuk nama "${queryName}" tidak ditemukan.` },
+          { status: 404 }
+        );
+      }
+      return NextResponse.json({ success: true, data: members[0] });
+    }
 
     if (codeParam) {
       const member = await prisma.member.findUnique({
@@ -75,7 +97,7 @@ export async function GET(req: NextRequest) {
       });
       if (!member) {
         return NextResponse.json(
-          { error: "Kartu KTA dengan kode tersebut tidak ditemukan." },
+          { error: "Kartu KTA tidak ditemukan." },
           { status: 404 }
         );
       }
@@ -88,7 +110,7 @@ export async function GET(req: NextRequest) {
       });
       if (!member) {
         return NextResponse.json(
-          { error: "Kartu KTA dengan ID tersebut tidak ditemukan." },
+          { error: "Kartu KTA tidak ditemukan." },
           { status: 404 }
         );
       }

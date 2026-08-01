@@ -100,18 +100,18 @@ export default function HomePage() {
               </div>
               <div>
                 <h3 className="font-extrabold text-sm text-[#004080]">
-                  2. KODE UNIK OTOMATIS
+                  2. MASA BERLAKU OTOMATIS
                 </h3>
                 <p className="text-xs text-[#004080]/75 mt-0.5 font-semibold">
-                  ID format EKSTIKKAxxx tersimpan aman di Neon PostgreSQL
-                  Database.
+                  Masa aktif tertera jelas hingga tamat SD atau selesai mengikuti
+                  ekskul KaDigi x KKA.
                 </p>
               </div>
             </div>
 
             <div
               id="feature-card-3"
-              className="bg-white border-[2.5px] border-[#004080] p-4 shadow-[3px_3px_0px_#004080] sm:shadow-[4px_4px_0px_#004080] flex items-start gap-3 text-left"
+              className="bg-white border-[2.5px] border-[#004080] p-4 shadow-[3px_3px_0px_#004080] flex items-start gap-3 text-left"
             >
               <div className="p-2 bg-[#004080] border border-[#004080] flex-shrink-0">
                 <Printer className="w-5 h-5 text-[#EAA221]" />

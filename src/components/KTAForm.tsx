@@ -33,7 +33,7 @@ export const KTAForm: React.FC<KTAFormProps> = ({ onSuccess }) => {
 
   const previewData: KTADetails = generatedKTA || {
     fullName: fullName.trim() || "NAMA SISWA",
-    memberCode: "EKSTIKKA000",
+    memberCode: "",
     photoBase64: photoBase64,
   };
 
@@ -154,7 +154,7 @@ export const KTAForm: React.FC<KTAFormProps> = ({ onSuccess }) => {
     if (!cardRef.current || !generatedKTA) return;
     await exportToPDF(
       cardRef.current,
-      generatedKTA.memberCode,
+      generatedKTA.memberCode || "",
       generatedKTA.fullName
     );
   };
@@ -163,7 +163,7 @@ export const KTAForm: React.FC<KTAFormProps> = ({ onSuccess }) => {
     if (!cardRef.current || !generatedKTA) return;
     await exportToPNG(
       cardRef.current,
-      generatedKTA.memberCode,
+      generatedKTA.memberCode || "",
       generatedKTA.fullName
     );
   };
@@ -322,16 +322,11 @@ export const KTAForm: React.FC<KTAFormProps> = ({ onSuccess }) => {
                   KTA Berhasil Diterbitkan!
                 </h3>
                 <p className="text-xs text-[#004080]/80 mt-0.5">
-                  Kode Anggota Anda:{" "}
-                  <strong
-                    className="text-[#D35400]"
-                    style={{
-                      fontFamily:
-                        "var(--font-pixel, 'Courier New', monospace)",
-                    }}
-                  >
-                    {generatedKTA.memberCode}
-                  </strong>
+                  Kartu Tanda Anggota untuk{" "}
+                  <strong className="text-[#D35400] font-extrabold uppercase">
+                    {generatedKTA.fullName}
+                  </strong>{" "}
+                  siap diunduh dan dicetak.
                 </p>
               </div>
             </div>

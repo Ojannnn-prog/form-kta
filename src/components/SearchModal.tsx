@@ -14,7 +14,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
   isOpen,
   onClose,
 }) => {
-  const [searchCode, setSearchCode] = useState("");
+  const [searchName, setSearchName] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [foundMember, setFoundMember] = useState<KTADetails | null>(null);
@@ -24,9 +24,9 @@ export const SearchModal: React.FC<SearchModalProps> = ({
 
   const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
-    const code = searchCode.trim().toUpperCase();
-    if (!code) {
-      setError("Silakan masukkan kode anggota (contoh: EKSTIKKA045).");
+    const nameQuery = searchName.trim();
+    if (!nameQuery) {
+      setError("Silakan masukkan nama siswa yang ingin dicari.");
       return;
     }
 
@@ -35,11 +35,11 @@ export const SearchModal: React.FC<SearchModalProps> = ({
     setFoundMember(null);
 
     try {
-      const res = await fetch(`/api/member?code=${encodeURIComponent(code)}`);
+      const res = await fetch(`/api/member?name=${encodeURIComponent(nameQuery)}`);
       const json = await res.json();
 
       if (!res.ok || !json.success) {
-        throw new Error(json.error || "Kartu KTA tidak ditemukan.");
+        throw new Error(json.error || "Kartu KTA dengan nama tersebut tidak ditemukan.");
       }
 
       setFoundMember(json.data);
@@ -58,7 +58,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
     if (!cardRef.current || !foundMember) return;
     await exportToPDF(
       cardRef.current,
-      foundMember.memberCode,
+      foundMember.memberCode || "",
       foundMember.fullName
     );
   };
@@ -67,7 +67,7 @@ export const SearchModal: React.FC<SearchModalProps> = ({
     if (!cardRef.current || !foundMember) return;
     await exportToPNG(
       cardRef.current,
-      foundMember.memberCode,
+      foundMember.memberCode || "",
       foundMember.fullName
     );
   };
@@ -107,10 +107,10 @@ export const SearchModal: React.FC<SearchModalProps> = ({
           <div className="relative flex-1 min-w-0">
             <input
               type="text"
-              placeholder="Kode (EKSTIKKAxxx)"
-              value={searchCode}
-              onChange={(e) => setSearchCode(e.target.value)}
-              className="w-full px-3 sm:px-4 py-2.5 bg-[#F4EBD0]/40 border-2 border-[#004080] text-[#004080] font-bold text-xs sm:text-sm uppercase focus:outline-none focus:ring-2 focus:ring-[#EAA221] placeholder:font-normal placeholder:normal-case placeholder:text-[#004080]/40"
+              placeholder="Masukkan Nama Lengkap (Contoh: Alex...)"
+              value={searchName}
+              onChange={(e) => setSearchName(e.target.value)}
+              className="w-full px-3 sm:px-4 py-2.5 bg-[#F4EBD0]/40 border-2 border-[#004080] text-[#004080] font-bold text-xs sm:text-sm focus:outline-none focus:ring-2 focus:ring-[#EAA221] placeholder:font-normal placeholder:text-[#004080]/40"
             />
           </div>
 

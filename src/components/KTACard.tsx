@@ -3,6 +3,7 @@
 import React from "react";
 
 export interface KTADetails {
+  id?: string;
   fullName: string;
   memberCode?: string;
   photoBase64?: string;
@@ -82,7 +83,7 @@ export const KTACard: React.FC<KTACardProps> = ({
           </div>
         </div>
 
-        {/* Right Badge: EKSTIKKA ACCESS */}
+        {/* Right Badge */}
         <div className="flex items-center gap-1.5 bg-[#EAA221] text-[#004080] px-2.5 py-1 border border-[#FFFFFF]">
           <div className="w-1.5 h-1.5 bg-[#004080] rounded-full" />
           <span className="text-[8px] font-black uppercase tracking-wide leading-none">

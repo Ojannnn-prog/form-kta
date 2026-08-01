@@ -47,7 +47,11 @@ export const RecentMembers: React.FC<RecentMembersProps> = ({
     setSelectedMember(member);
     setTimeout(async () => {
       if (cardRef.current) {
-        await exportToPDF(cardRef.current, member.memberCode, member.fullName);
+        await exportToPDF(
+          cardRef.current,
+          member.memberCode || "",
+          member.fullName
+        );
       }
     }, 150);
   };
@@ -119,7 +123,7 @@ export const RecentMembers: React.FC<RecentMembersProps> = ({
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {members.map((m) => (
             <div
-              key={m.memberCode}
+              key={m.id || m.fullName}
               className="bg-white border-2 border-[#004080] shadow-[3px_3px_0px_#004080] p-4 hover:-translate-y-1 hover:shadow-[5px_5px_0px_#004080] transition-all flex flex-col justify-between"
             >
               <div className="flex items-center gap-3">
@@ -145,13 +149,8 @@ export const RecentMembers: React.FC<RecentMembersProps> = ({
                     {m.fullName}
                   </h4>
                   <div className="inline-block bg-[#F4EBD0] border border-[#004080] px-1.5 py-0.5 mt-1">
-                    <span
-                      className="text-[9px] font-bold text-[#D35400]"
-                      style={{
-                        fontFamily: "var(--font-pixel, 'Courier New', monospace)",
-                      }}
-                    >
-                      {m.memberCode}
+                    <span className="text-[9px] font-bold text-[#D35400] uppercase">
+                      ANGGOTA EKSKUL KaDigi x KKA
                     </span>
                   </div>
                 </div>
