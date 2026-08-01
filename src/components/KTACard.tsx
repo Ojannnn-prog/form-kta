@@ -19,9 +19,8 @@ interface KTACardProps {
 
 /**
  * KTACard Component - CR-80 Standard ID Card (85.6mm x 53.98mm)
- * Restored to exact original early working version (commit 36876c2),
- * with the ID code box removed so it focuses purely on Student Name and Photo.
- * Zero experimental typography styles — 100% clean and never overlaps.
+ * Uses non-breaking spaces (&nbsp;) and slight letter-spacing (0.5px)
+ * to prevent HTML2Canvas from squishing words or collapsing spaces on Windows.
  */
 export const KTACard: React.FC<KTACardProps> = ({
   data,
@@ -82,15 +81,19 @@ export const KTACard: React.FC<KTACardProps> = ({
           </div>
           <div className="flex flex-col">
             <span
-              className="text-[10px] font-bold tracking-wider leading-tight text-[#EAA221]"
+              className="text-[10px] font-bold text-[#EAA221]"
               style={{
+                letterSpacing: "0.5px",
                 fontFamily:
                   "var(--font-pixel, 'Courier New'), 'Courier New', Courier, monospace",
               }}
             >
               KaDigi x KKA
             </span>
-            <span className="text-[7.5px] tracking-wide text-white uppercase font-bold mt-0.5">
+            <span
+              className="text-[7.5px] text-white uppercase font-bold mt-0.5"
+              style={{ letterSpacing: "0.5px" }}
+            >
               SDN 231 SUKAASIH • KELAS DIGITAL
             </span>
           </div>
@@ -100,8 +103,9 @@ export const KTACard: React.FC<KTACardProps> = ({
         <div className="flex items-center gap-1 bg-[#EAA221] text-[#004080] px-2 py-0.5 border border-white">
           <div className="w-1.5 h-1.5 bg-[#004080] rounded-full" />
           <span
-            className="text-[7px] font-black uppercase tracking-wider"
+            className="text-[7px] font-black uppercase"
             style={{
+              letterSpacing: "0.5px",
               fontFamily:
                 "var(--font-pixel, 'Courier New'), 'Courier New', Courier, monospace",
             }}
@@ -137,26 +141,36 @@ export const KTACard: React.FC<KTACardProps> = ({
                 >
                   <path d="M8 4h8v2H8V4zm-2 2h2v6H6V6zm10 0h2v6h-2V6zM8 12h8v2H8v-2zm-4 2h4v2H4v-2zm12 0h4v2h-4v-2zm-2 2h2v6h-2v-6zm-8 0h2v6H6v-6z" />
                 </svg>
-                <span className="text-[8px] font-bold mt-1 uppercase tracking-tighter">
+                <span
+                  className="text-[8px] font-bold mt-1 uppercase"
+                  style={{ letterSpacing: "0.5px" }}
+                >
                   NO PHOTO
                 </span>
               </div>
             )}
           </div>
           {/* Status badge below photo */}
-          <div className="mt-1 bg-[#004080] text-[#EAA221] px-2 py-0.5 border border-[#004080] text-[8px] font-bold uppercase tracking-wider">
+          <div
+            className="mt-1 bg-[#004080] text-[#EAA221] px-2 py-0.5 border border-[#004080] text-[8px] font-bold uppercase"
+            style={{ letterSpacing: "0.5px" }}
+          >
             ANGGOTA AKTIF
           </div>
         </div>
 
-        {/* Right: Member Info & Details (Exact original early clean layout, without ID code box) */}
+        {/* Right: Member Info & Details (Clean layout, focused on Student Name) */}
         <div className="flex-1 min-w-0 flex flex-col justify-between h-full py-0.5 z-10">
           <div>
-            <div className="text-[8.5px] font-bold uppercase tracking-widest text-[#D35400]">
+            <div
+              className="text-[8.5px] font-bold uppercase text-[#D35400]"
+              style={{ letterSpacing: "0.5px" }}
+            >
               NAMA ANGGOTA / STUDENT NAME
             </div>
             <div
-              className="text-[17px] font-extrabold leading-normal text-[#004080] tracking-tight mt-0.5 break-words uppercase py-0.5"
+              className="text-[17px] font-extrabold leading-normal text-[#004080] mt-0.5 break-words uppercase py-0.5"
+              style={{ letterSpacing: "0.5px" }}
               title={fullName || "NAMA SISWA"}
             >
               {fullName || "NAMA SISWA"}
@@ -164,19 +178,22 @@ export const KTACard: React.FC<KTACardProps> = ({
             <div className="w-12 h-0.5 bg-[#EAA221] mt-0.5" />
           </div>
 
-          {/* Division & School Info (Original clean layout at bottom of right column) */}
-          <div className="flex flex-col text-[8px] font-semibold text-[#004080] pt-1">
+          {/* Division & School Info (Using non-breaking spaces so words never squish) */}
+          <div className="flex flex-col text-[8.5px] font-semibold text-[#004080] pt-1">
             <div className="flex items-center justify-between">
               <div>
-                <span className="opacity-70">SEKOLAH:</span>{" "}
+                <span className="opacity-70">SEKOLAH:&nbsp;</span>
                 <span className="font-bold">SDN 231 SUKAASIH</span>
               </div>
               <div>
-                <span className="opacity-70">STATUS:</span>{" "}
+                <span className="opacity-70">STATUS:&nbsp;</span>
                 <span className="font-bold">{displayDate}</span>
               </div>
             </div>
-            <div className="text-[8px] mt-0.5 font-bold text-[#D35400]">
+            <div
+              className="text-[8.5px] mt-0.5 font-bold text-[#D35400]"
+              style={{ letterSpacing: "0.5px" }}
+            >
               KODING &amp; KECERDASAN ARTIFISIAL
             </div>
           </div>
@@ -195,13 +212,14 @@ export const KTACard: React.FC<KTACardProps> = ({
             <path d="M6 6h12v4h4v4h-4v4H6v-4H2v-4h4V6zm2 4v4h8v-4H8zm2-2h4v2h-4V8zm-2 2h2v4H8v-4zm6 0h2v4h-2v-4zm-2 4h4v2h-4v-2z" />
           </svg>
           <span
-            className="text-[7px] font-bold uppercase tracking-wide text-[#004080]"
+            className="text-[7px] font-bold uppercase text-[#004080]"
             style={{
+              letterSpacing: "0.5px",
               fontFamily:
                 "var(--font-pixel, 'Courier New'), 'Courier New', Courier, monospace",
             }}
           >
-            KELAS DIGITAL SDN 231 SUKAASIH
+            KELAS DIGITAL • SDN 231 SUKAASIH
           </span>
         </div>
 
@@ -214,7 +232,12 @@ export const KTACard: React.FC<KTACardProps> = ({
               style={{ width: `${w}px` }}
             />
           ))}
-          <span className="text-[7px] font-mono font-bold ml-1">KKA</span>
+          <span
+            className="text-[7px] font-mono font-bold ml-1"
+            style={{ letterSpacing: "0.5px" }}
+          >
+            KKA
+          </span>
         </div>
       </div>
     </div>

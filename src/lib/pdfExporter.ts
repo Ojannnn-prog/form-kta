@@ -21,7 +21,8 @@ async function waitForFontsAndDOM(): Promise<void> {
  * CR-80 Dimension: 85.60 mm x 53.98 mm
  * Resolution: scale 3 (~300 DPI high resolution print quality)
  *
- * Restored to exact original early working version without experimental DOM style injection.
+ * Guarantees zero extra whitespace/background by pinning clonedEl to absolute (0,0)
+ * with exact 428x270 dimensions and scrollX/scrollY reset to 0.
  */
 export async function exportToPDF(
   element: HTMLElement,
@@ -41,13 +42,28 @@ export async function exportToPDF(
     height: 270,
     windowWidth: 428,
     windowHeight: 270,
+    x: 0,
+    y: 0,
+    scrollX: 0,
+    scrollY: 0,
     onclone: (clonedDoc, clonedEl) => {
-      // Ensure the cloned card has no scaling or transformations that could clip text
+      // 1. Reset document/body margins and scrollbar padding in the cloned iframe
+      clonedDoc.documentElement.style.margin = "0px";
+      clonedDoc.documentElement.style.padding = "0px";
+      clonedDoc.documentElement.style.overflow = "hidden";
+      clonedDoc.body.style.margin = "0px";
+      clonedDoc.body.style.padding = "0px";
+      clonedDoc.body.style.overflow = "hidden";
+
+      // 2. Position the cloned card at exact coordinate (0, 0) to prevent any cream background border
+      clonedEl.style.position = "absolute";
+      clonedEl.style.left = "0px";
+      clonedEl.style.top = "0px";
+      clonedEl.style.margin = "0px";
+      clonedEl.style.padding = "0px";
       clonedEl.style.transform = "none";
       clonedEl.style.width = "428px";
       clonedEl.style.height = "270px";
-      clonedEl.style.margin = "0";
-      clonedEl.style.position = "relative";
       clonedEl.style.overflow = "hidden";
     },
   });
@@ -92,13 +108,28 @@ export async function exportToPNG(
     height: 270,
     windowWidth: 428,
     windowHeight: 270,
+    x: 0,
+    y: 0,
+    scrollX: 0,
+    scrollY: 0,
     onclone: (clonedDoc, clonedEl) => {
-      // Ensure the cloned card has no scaling or transformations that could clip text
+      // 1. Reset document/body margins and scrollbar padding in the cloned iframe
+      clonedDoc.documentElement.style.margin = "0px";
+      clonedDoc.documentElement.style.padding = "0px";
+      clonedDoc.documentElement.style.overflow = "hidden";
+      clonedDoc.body.style.margin = "0px";
+      clonedDoc.body.style.padding = "0px";
+      clonedDoc.body.style.overflow = "hidden";
+
+      // 2. Position the cloned card at exact coordinate (0, 0) to prevent any cream background border
+      clonedEl.style.position = "absolute";
+      clonedEl.style.left = "0px";
+      clonedEl.style.top = "0px";
+      clonedEl.style.margin = "0px";
+      clonedEl.style.padding = "0px";
       clonedEl.style.transform = "none";
       clonedEl.style.width = "428px";
       clonedEl.style.height = "270px";
-      clonedEl.style.margin = "0";
-      clonedEl.style.position = "relative";
       clonedEl.style.overflow = "hidden";
     },
   });
