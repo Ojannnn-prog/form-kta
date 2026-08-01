@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { prisma, ensureDatabaseTableExists } from "@/lib/prisma";
 import { getUniqueMemberCode } from "@/lib/utils";
 
 export async function POST(req: NextRequest) {
   try {
+    await ensureDatabaseTableExists();
+
     const body = await req.json();
     const { fullName, photoBase64, memberCode: customCode } = body;
 
@@ -63,6 +65,8 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
+    await ensureDatabaseTableExists();
+
     const { searchParams } = new URL(req.url);
     const codeParam = searchParams.get("code");
     const nameParam = searchParams.get("name") || searchParams.get("q");
@@ -136,8 +140,12 @@ export async function GET(req: NextRequest) {
     });
   } catch (error: unknown) {
     console.error("Error fetching members:", error);
+    const errorMessage =
+      error instanceof Error
+        ? error.message
+        : "Gagal mengambil data dari server.";
     return NextResponse.json(
-      { error: "Gagal mengambil data dari server." },
+      { error: errorMessage },
       { status: 500 }
     );
   }
