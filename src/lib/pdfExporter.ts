@@ -2,9 +2,9 @@ import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
 /**
- * Ensures all webfonts are ready before capturing canvas
+ * Ensures all webfonts and images are ready before capturing canvas
  */
-async function waitForFonts(): Promise<void> {
+async function waitForFontsAndDOM(): Promise<void> {
   if (typeof document !== "undefined" && document.fonts) {
     try {
       await document.fonts.ready;
@@ -12,6 +12,8 @@ async function waitForFonts(): Promise<void> {
       // Ignore font loading errors
     }
   }
+  // Short yield to allow any DOM relayouts
+  await new Promise((resolve) => setTimeout(resolve, 80));
 }
 
 /**
@@ -24,7 +26,7 @@ export async function exportToPDF(
   memberCode: string,
   fullName: string
 ): Promise<void> {
-  await waitForFonts();
+  await waitForFontsAndDOM();
 
   // Capture card with scale 3 for high-res crisp typography and pixel art
   const canvas = await html2canvas(element, {
@@ -33,16 +35,22 @@ export async function exportToPDF(
     allowTaint: true,
     backgroundColor: "#F4EBD0",
     logging: false,
+    width: 428,
+    height: 270,
+    windowWidth: 428,
+    windowHeight: 270,
     onclone: (clonedDoc, clonedEl) => {
       // Ensure the cloned card has no scaling or transformations that could clip text
       clonedEl.style.transform = "none";
       clonedEl.style.width = "428px";
       clonedEl.style.height = "270px";
       clonedEl.style.margin = "0";
+      clonedEl.style.position = "relative";
+      clonedEl.style.overflow = "hidden";
     },
   });
 
-  const imgData = canvas.toDataURL("image/png");
+  const imgData = canvas.toDataURL("image/png", 1.0);
 
   // Initialize jsPDF in landscape with exact CR-80 millimeters
   const pdf = new jsPDF({
@@ -69,7 +77,7 @@ export async function exportToPNG(
   memberCode: string,
   fullName: string
 ): Promise<void> {
-  await waitForFonts();
+  await waitForFontsAndDOM();
 
   const canvas = await html2canvas(element, {
     scale: 3,
@@ -77,16 +85,22 @@ export async function exportToPNG(
     allowTaint: true,
     backgroundColor: "#F4EBD0",
     logging: false,
+    width: 428,
+    height: 270,
+    windowWidth: 428,
+    windowHeight: 270,
     onclone: (clonedDoc, clonedEl) => {
       // Ensure the cloned card has no scaling or transformations that could clip text
       clonedEl.style.transform = "none";
       clonedEl.style.width = "428px";
       clonedEl.style.height = "270px";
       clonedEl.style.margin = "0";
+      clonedEl.style.position = "relative";
+      clonedEl.style.overflow = "hidden";
     },
   });
 
-  const imgData = canvas.toDataURL("image/png");
+  const imgData = canvas.toDataURL("image/png", 1.0);
   const link = document.createElement("a");
   const safeName = fullName.replace(/[^a-zA-Z0-9]/g, "_").substring(0, 20);
   link.download = `KTA-${memberCode}-${safeName}.png`;

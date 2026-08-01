@@ -81,7 +81,8 @@ export const KTACard: React.FC<KTACardProps> = ({
             <span
               className="text-[10px] font-bold tracking-wider leading-tight text-[#EAA221]"
               style={{
-                fontFamily: "var(--font-pixel, 'Courier New', monospace)",
+                fontFamily:
+                  "var(--font-pixel, 'Courier New'), 'Courier New', Courier, monospace",
               }}
             >
               KaDigi x KKA
@@ -98,7 +99,8 @@ export const KTACard: React.FC<KTACardProps> = ({
           <span
             className="text-[7px] font-black uppercase tracking-wider"
             style={{
-              fontFamily: "var(--font-pixel, 'Courier New', monospace)",
+              fontFamily:
+                "var(--font-pixel, 'Courier New'), 'Courier New', Courier, monospace",
             }}
           >
             KODING &amp; AI
@@ -160,16 +162,17 @@ export const KTACard: React.FC<KTACardProps> = ({
             <div className="w-12 h-0.5 bg-[#EAA221] mt-0.5" />
           </div>
 
-          {/* Unique Member Code with Retro Display Box */}
+          {/* Unique Member Code with Retro Display Box - Bulletproof Courier Monospace */}
           <div className="mt-1">
             <div className="text-[8.5px] font-bold uppercase tracking-widest text-[#004080] opacity-75">
               KODE IDENTITAS / ID CODE
             </div>
-            <div className="mt-0.5 inline-flex items-center min-w-[140px] bg-white border-2 border-[#004080] px-3 py-1.5 shadow-[2px_2px_0px_#004080]">
+            <div className="mt-0.5 inline-block bg-white border-2 border-[#004080] px-3.5 py-1.5 shadow-[2px_2px_0px_#004080]">
               <span
-                className="text-xs font-black tracking-widest text-[#D35400] block leading-none"
+                className="text-[13px] font-black tracking-[0.16em] text-[#D35400] block leading-normal uppercase"
                 style={{
-                  fontFamily: "var(--font-pixel, 'Courier New', monospace)",
+                  fontFamily:
+                    "'Courier New', Courier, monospace, var(--font-inter, sans-serif)",
                 }}
               >
                 {memberCode || "EKSTIKKA000"}
@@ -210,7 +213,8 @@ export const KTACard: React.FC<KTACardProps> = ({
           <span
             className="text-[7px] font-bold uppercase tracking-wide text-[#004080]"
             style={{
-              fontFamily: "var(--font-pixel, 'Courier New', monospace)",
+              fontFamily:
+                "var(--font-pixel, 'Courier New'), 'Courier New', Courier, monospace",
             }}
           >
             KELAS DIGITAL SDN 231 SUKAASIH
